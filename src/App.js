@@ -3,39 +3,76 @@ import './App.css';
 
 function App() {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [movies, setMovies] = useState([]);
+  const [director, setDirector] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   
-  const features = [
-    {
-      image: "https://avatars.mds.yandex.net/get-kinopoisk-image/1900788/cb3b1887-361d-4b93-8b33-8dce4acf2a23/576x",
-      title: "Твоё имя",
-      description: "Анимационный фильм о любви, времени и судьбе"
-    },
-    {
-      image: "https://avatars.mds.yandex.net/get-kinopoisk-image/9784475/de727406-1f97-4205-b509-3a73d3dc2157/600x900",
-      title: "Дети, которые гоняются за звёздами",
-      description: "История о мечтах и стремлении к звёздам"
-    },
-    {
-      image: "https://avatars.mds.yandex.net/get-ott/2385704/2a00000198536dd6b86347d06b9196570b26/600x900",
-      title: "Сад изящных слов",
-      description: "Поэтичная история о взрослении и первой любви"
-    }
-  ];
+  // Загрузка данных из JSON
+  useEffect(() => {
+    const fetchMovies = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch('/movies.json');
+        if (!response.ok) {
+          throw new Error('Ошибка загрузки данных');
+        }
+        const data = await response.json();
+        setMovies(data.movies);
+        setDirector(data.director);
+        setError(null);
+      } catch (err) {
+        setError(err.message);
+        console.error('Ошибка загрузки фильмов:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMovies();
+  }, []);
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % features.length);
-    }, 5000);
-    return () => clearInterval(timer);
-  }, [features.length]);
+    if (movies.length > 0) {
+      const timer = setInterval(() => {
+        setCurrentSlide((prev) => (prev + 1) % movies.length);
+      }, 5000);
+      return () => clearInterval(timer);
+    }
+  }, [movies.length]);
 
   const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % features.length);
+    setCurrentSlide((prev) => (prev + 1) % movies.length);
   };
 
   const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + features.length) % features.length);
+    setCurrentSlide((prev) => (prev - 1 + movies.length) % movies.length);
   };
+
+  // Показываем загрузку
+  if (loading) {
+    return (
+      <div className="App">
+        <div className="loading-container">
+          <div className="loading-spinner"></div>
+          <h2>Загрузка фильмов...</h2>
+        </div>
+      </div>
+    );
+  }
+
+  // Показываем ошибку
+  if (error) {
+    return (
+      <div className="App">
+        <div className="error-container">
+          <h2>Ошибка загрузки данных</h2>
+          <p>{error}</p>
+          <button onClick={() => window.location.reload()}>Попробовать снова</button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="App">
@@ -78,13 +115,23 @@ function App() {
                   className="slider-track"
                   style={{ transform: `translateX(-${currentSlide * 100}%)` }}
                 >
-                  {features.map((feature, index) => (
-                    <div key={index} className="feature-card">
+                  {movies.map((movie, index) => (
+                    <div key={movie.id} className="feature-card">
                       <div className="feature-image">
-                        <img src={feature.image} alt={feature.title} />
+                        <img src={movie.poster} alt={movie.title} />
                       </div>
-                      <h4>{feature.title}</h4>
-                      <p>{feature.description}</p>
+                      <h4>{movie.title}</h4>
+                      <p className="movie-year">({movie.year})</p>
+                      <p>{movie.description}</p>
+                      <div className="movie-rating">
+                        <span className="rating-label">Рейтинг:</span>
+                        <span className="rating-value">{movie.rating}/10</span>
+                      </div>
+                      <div className="movie-genres">
+                        {movie.genre.map((genre, idx) => (
+                          <span key={idx} className="genre-tag">{genre}</span>
+                        ))}
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -93,7 +140,7 @@ function App() {
                 ›
               </button>
               <div className="slider-dots">
-                {features.map((_, index) => (
+                {movies.map((_, index) => (
                   <button
                     key={index}
                     className={`dot ${index === currentSlide ? 'active' : ''}`}
@@ -105,14 +152,73 @@ function App() {
           </div>
         </section>
 
+        {/* Movies Grid Section */}
+        <section className="movies-grid">
+          <div className="container">
+            <h3>ВСЕ ФИЛЬМЫ</h3>
+            <div className="movies-container">
+              {movies.map((movie, index) => (
+                <div key={movie.id} className="movie-card" style={{ animationDelay: `${index * 0.1}s` }}>
+                  <div className="movie-poster">
+                    <img src={movie.poster} alt={movie.title} />
+                    <div className="movie-overlay">
+                      <div className="movie-info">
+                        <h4>{movie.title}</h4>
+                        <p className="movie-year-small">({movie.year})</p>
+                        <div className="movie-rating-small">
+                          <span>⭐ {movie.rating}/10</span>
+                        </div>
+                        <div className="movie-duration">
+                          <span>⏱️ {movie.duration}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="movie-details">
+                    <h4>{movie.title}</h4>
+                    <p className="movie-director">Режиссер: {movie.director}</p>
+                    <div className="movie-genres-small">
+                      {movie.genre.slice(0, 3).map((genre, idx) => (
+                        <span key={idx} className="genre-tag-small">{genre}</span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
         <section className="about">
           <div className="container">
             <h3>О РЕЖИССЕРЕ</h3>
-            <p>
-              Макото Синкай - выдающийся японский режиссер анимации, известный своими поэтичными 
-              и визуально потрясающими фильмами. Его работы сочетают в себе глубокие эмоции, 
-              красивую анимацию и философские размышления о времени, любви и человеческих отношениях.
-            </p>
+            {director && (
+              <div className="director-info">
+                <h4>{director.name} ({director.birthYear})</h4>
+                <p>{director.bio}</p>
+                <div className="director-details">
+                  <div className="detail-item">
+                    <strong>Национальность:</strong> {director.nationality}
+                  </div>
+                  <div className="detail-item">
+                    <strong>Известные работы:</strong>
+                    <ul>
+                      {director.notableWorks.map((work, index) => (
+                        <li key={index}>{work}</li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div className="detail-item">
+                    <strong>Награды:</strong>
+                    <ul>
+                      {director.awards.map((award, index) => (
+                        <li key={index}>{award}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </section>
       </main>
