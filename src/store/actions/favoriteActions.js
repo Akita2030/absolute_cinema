@@ -33,10 +33,13 @@ export const isMovieInFavorites = (favorites, movieId) => {
 export const toggleFavorite = (movie, favorites) => {
   return (dispatch) => {
     const isInFavorites = isMovieInFavorites(favorites, movie.id);
+    console.log('toggleFavorite - movie:', movie.title, 'isInFavorites:', isInFavorites);
     
     if (isInFavorites) {
+      console.log('Removing from favorites');
       dispatch(removeFromFavorites(movie.id));
     } else {
+      console.log('Adding to favorites');
       dispatch(addToFavorites(movie));
     }
   };

@@ -22,6 +22,8 @@ const MovieList = () => {
 
   const handleFavoriteClick = (e, movie) => {
     e.stopPropagation(); // Prevent triggering movie click
+    console.log('Adding to favorites:', movie.title);
+    console.log('Current favorites before:', favorites);
     dispatch(toggleFavorite(movie, favorites));
   };
 

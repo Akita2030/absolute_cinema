@@ -9,6 +9,10 @@ const FavoritesPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { favorites } = useSelector(state => state.favorites);
+  
+  // Debug: Log favorites to console
+  console.log('FavoritesPage - favorites:', favorites);
+  console.log('FavoritesPage - favorites length:', favorites.length);
 
   const handleMovieClick = (movie) => {
     dispatch(selectMovie(movie));
@@ -64,6 +68,15 @@ const FavoritesPage = () => {
               onClick={handleClearAll}
             >
               Очистить все
+            </button>
+            <button 
+              className="debug-btn"
+              onClick={() => {
+                console.log('Current favorites state:', favorites);
+                console.log('localStorage favorites:', localStorage.getItem('movieFavorites'));
+              }}
+            >
+              Debug
             </button>
           </div>
         </div>
