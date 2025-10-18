@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 import { fetchMovies, selectMovie, clearSelectedMovie } from '../store/actions/movieActions';
+import { toggleFavorite, isMovieInFavorites } from '../store/actions/favoriteActions';
 import './MovieDetail.css';
 
 const MovieDetail = () => {
@@ -9,6 +10,7 @@ const MovieDetail = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const { movies, selectedMovie, loading, error } = useSelector(state => state.movies);
+  const { favorites } = useSelector(state => state.favorites);
 
   useEffect(() => {
     // Если фильмы еще не загружены, загружаем их
@@ -30,6 +32,12 @@ const MovieDetail = () => {
   const handleBackClick = () => {
     dispatch(clearSelectedMovie());
     navigate('/');
+  };
+
+  const handleFavoriteClick = () => {
+    if (selectedMovie) {
+      dispatch(toggleFavorite(selectedMovie, favorites));
+    }
   };
 
   if (loading) {
@@ -78,6 +86,13 @@ const MovieDetail = () => {
               <span className="rating-number">{selectedMovie.rating}</span>
               <span className="rating-max">/10</span>
             </div>
+            <button 
+              className={`favorite-btn-large ${isMovieInFavorites(favorites, selectedMovie.id) ? 'active' : ''}`}
+              onClick={handleFavoriteClick}
+              title={isMovieInFavorites(favorites, selectedMovie.id) ? 'Удалить из избранного' : 'Добавить в избранное'}
+            >
+              {isMovieInFavorites(favorites, selectedMovie.id) ? '❤️' : '🤍'}
+            </button>
           </div>
           
           <div className="movie-info-section">

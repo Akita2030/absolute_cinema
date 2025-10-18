@@ -2,12 +2,14 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { fetchMovies, selectMovie } from '../store/actions/movieActions';
+import { toggleFavorite, isMovieInFavorites } from '../store/actions/favoriteActions';
 import './MovieList.css';
 
 const MovieList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { movies, loading, error } = useSelector(state => state.movies);
+  const { favorites } = useSelector(state => state.favorites);
 
   useEffect(() => {
     dispatch(fetchMovies());
@@ -16,6 +18,11 @@ const MovieList = () => {
   const handleMovieClick = (movie) => {
     dispatch(selectMovie(movie));
     navigate(`/movie/${movie.id}`);
+  };
+
+  const handleFavoriteClick = (e, movie) => {
+    e.stopPropagation(); // Prevent triggering movie click
+    dispatch(toggleFavorite(movie, favorites));
   };
 
   if (loading) {
@@ -43,26 +50,33 @@ const MovieList = () => {
         <h2 className="page-title">Коллекция фильмов Макото Синкая</h2>
         <div className="movies-grid">
           {movies.map((movie) => (
-            <div 
-              key={movie.id} 
-              className="movie-card"
-              onClick={() => handleMovieClick(movie)}
-            >
-              <div className="movie-poster">
-                <img src={movie.poster} alt={movie.title} />
-                <div className="movie-overlay">
-                  <div className="movie-info">
-                    <h4>{movie.title}</h4>
-                    <p className="movie-year">({movie.year})</p>
-                    <div className="movie-rating">
-                      <span>⭐ {movie.rating}/10</span>
-                    </div>
-                    <div className="movie-duration">
-                      <span>⏱️ {movie.duration}</span>
+                <div 
+                  key={movie.id} 
+                  className="movie-card"
+                  onClick={() => handleMovieClick(movie)}
+                >
+                  <div className="movie-poster">
+                    <img src={movie.poster} alt={movie.title} />
+                    <button 
+                      className={`favorite-btn ${isMovieInFavorites(favorites, movie.id) ? 'active' : ''}`}
+                      onClick={(e) => handleFavoriteClick(e, movie)}
+                      title={isMovieInFavorites(favorites, movie.id) ? 'Удалить из избранного' : 'Добавить в избранное'}
+                    >
+                      {isMovieInFavorites(favorites, movie.id) ? '❤️' : '🤍'}
+                    </button>
+                    <div className="movie-overlay">
+                      <div className="movie-info">
+                        <h4>{movie.title}</h4>
+                        <p className="movie-year">({movie.year})</p>
+                        <div className="movie-rating">
+                          <span>⭐ {movie.rating}/10</span>
+                        </div>
+                        <div className="movie-duration">
+                          <span>⏱️ {movie.duration}</span>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </div>
               <div className="movie-details">
                 <h4>{movie.title}</h4>
                 <p className="movie-director">Режиссер: {movie.director}</p>

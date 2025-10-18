@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import store from './store';
 import MovieList from './components/MovieList';
 import MovieDetail from './components/MovieDetail';
+import FavoritesPage from './components/FavoritesPage';
 import './App.css';
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
               <ul className="nav-menu">
                 <li><a href="/">Главная</a></li>
                 <li><a href="/">Фильмы</a></li>
+                <li><a href="/favorites">Избранное</a></li>
                 <li><a href="/">О режиссере</a></li>
                 <li><a href="/">Контакты</a></li>
               </ul>
@@ -32,6 +34,7 @@ function App() {
             <Routes>
               <Route path="/" element={<MovieList />} />
               <Route path="/movie/:id" element={<MovieDetail />} />
+              <Route path="/favorites" element={<FavoritesPage />} />
             </Routes>
           </main>
 
