@@ -105,6 +105,47 @@ body {
   align-items: center;
 }
 
+/* Header auth controls */
+.nav-auth {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nav-auth a {
+  display: inline-block;
+  padding: 8px 14px;
+  border-radius: 9999px;
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.nav-auth a:hover {
+  background: rgba(255,255,255,0.25);
+}
+
+.nav-user {
+  color: #fff;
+  font-weight: 600;
+  margin-right: 4px;
+}
+
+.nav-logout {
+  padding: 8px 14px;
+  border-radius: 9999px;
+  border: 0;
+  cursor: pointer;
+  background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+  color: #fff;
+  font-weight: 700;
+}
+
+.nav-logout:hover {
+  filter: brightness(1.05);
+}
+
 .nav-brand {
   display: flex;
   align-items: center;

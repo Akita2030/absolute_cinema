@@ -9,20 +9,45 @@ import {
 	AUTH_LOGOUT
 } from '../actions/authActions';
 
-// Simulated async API using setTimeout. Replace with real API later
+// Helpers to work with localStorage "users" list
+const loadUsers = () => {
+    try {
+        const raw = localStorage.getItem('users');
+        return raw ? JSON.parse(raw) : [];
+    } catch (_) {
+        return [];
+    }
+};
+const saveUsers = (users) => {
+    try { localStorage.setItem('users', JSON.stringify(users)); } catch {}
+};
+
+// Simulated async API using setTimeout. Validates against locally stored users
 const fakeApi = {
-	register: async ({ username, email, password }) => {
-		await new Promise(r => setTimeout(r, 500));
-		if (!username || !email || !password) throw new Error('Все поля обязательны');
-		if (password.length < 6) throw new Error('Пароль должен быть не менее 6 символов');
-		return { id: Date.now(), username, email };
-	},
-	login: async ({ email, password }) => {
-		await new Promise(r => setTimeout(r, 400));
-		if (!email || !password) throw new Error('Введите email и пароль');
-		// Accept any email/password for demo; could validate against saved user
-		return { id: Date.now(), username: email.split('@')[0], email };
-	}
+    register: async ({ username, email, password }) => {
+        await new Promise(r => setTimeout(r, 400));
+        if (!username || !email || !password) throw new Error('Все поля обязательны');
+        if (password.length < 6) throw new Error('Пароль должен быть не менее 6 символов');
+        const users = loadUsers();
+        const exists = users.some(u => u.email.toLowerCase() === email.toLowerCase());
+        if (exists) throw new Error('Пользователь с таким email уже существует');
+        const user = { id: Date.now(), username, email, password };
+        users.push(user);
+        saveUsers(users);
+        // Do not return password with user object
+        const { password: _pw, ...publicUser } = user;
+        return publicUser;
+    },
+    login: async ({ email, password }) => {
+        await new Promise(r => setTimeout(r, 300));
+        if (!email || !password) throw new Error('Введите email и пароль');
+        const users = loadUsers();
+        const user = users.find(u => u.email.toLowerCase() === email.toLowerCase());
+        if (!user) throw new Error('Пользователь не найден. Пройдите регистрацию.');
+        if (user.password !== password) throw new Error('Неверный пароль');
+        const { password: _pw, ...publicUser } = user;
+        return publicUser;
+    }
 };
 
 const persist = (state) => {
