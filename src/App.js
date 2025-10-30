@@ -1,11 +1,34 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Provider } from 'react-redux';
+import { Provider, useDispatch, useSelector } from 'react-redux';
 import store from './store';
 import MovieList from './components/MovieList';
 import MovieDetail from './components/MovieDetail';
 import FavoritesPage from './components/FavoritesPage';
 import './App.css';
+import LoginPage from './components/LoginPage';
+import RegisterPage from './components/RegisterPage';
+import { authLogout } from './store/actions/authActions';
+import ProtectedRoute from './components/ProtectedRoute';
+
+const HeaderAuth = () => {
+  const { isAuthenticated, user } = useSelector(s => s.auth);
+  const dispatch = useDispatch();
+  if (isAuthenticated) {
+    return (
+      <div className="nav-auth">
+        <span className="nav-user">{user?.username || user?.email}</span>
+        <button className="nav-logout" onClick={() => dispatch(authLogout())}>Выйти</button>
+      </div>
+    );
+  }
+  return (
+    <div className="nav-auth">
+      <a href="/login">Войти</a>
+      <a href="/register">Регистрация</a>
+    </div>
+  );
+};
 
 function App() {
   return (
@@ -26,6 +49,7 @@ function App() {
                 <li><a href="/">О режиссере</a></li>
                 <li><a href="/">Контакты</a></li>
               </ul>
+              <HeaderAuth />
             </nav>
           </header>
 
@@ -34,7 +58,13 @@ function App() {
             <Routes>
               <Route path="/" element={<MovieList />} />
               <Route path="/movie/:id" element={<MovieDetail />} />
-              <Route path="/favorites" element={<FavoritesPage />} />
+              <Route path="/favorites" element={
+                <ProtectedRoute>
+                  <FavoritesPage />
+                </ProtectedRoute>
+              } />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/register" element={<RegisterPage />} />
             </Routes>
           </main>
 

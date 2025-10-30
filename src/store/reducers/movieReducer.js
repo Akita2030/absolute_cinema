@@ -59,3 +59,4 @@ const movieReducer = (state = initialState, action) => {
 };
 
 export default movieReducer;
+
