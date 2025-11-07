@@ -4,11 +4,13 @@ import movieReducer from './reducers/movieReducer';
 import favoriteReducer from './reducers/favoriteReducer';
 import authReducer from './reducers/authReducer';
 import authMiddleware from './middleware/authMiddleware';
+import bookingReducer from './reducers/bookingReducer';
 
 const rootReducer = combineReducers({
   movies: movieReducer,
   favorites: favoriteReducer,
-  auth: authReducer
+  auth: authReducer,
+  booking: bookingReducer
 });
 
 const store = createStore(rootReducer, applyMiddleware(thunk, authMiddleware));

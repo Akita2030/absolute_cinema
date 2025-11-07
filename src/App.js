@@ -10,6 +10,7 @@ import LoginPage from './components/LoginPage';
 import RegisterPage from './components/RegisterPage';
 import { authLogout } from './store/actions/authActions';
 import ProtectedRoute from './components/ProtectedRoute';
+import BookingPage from './components/BookingPage';
 
 const HeaderAuth = () => {
   const { isAuthenticated, user } = useSelector(s => s.auth);
@@ -46,6 +47,7 @@ function App() {
                 <li><a href="/">Главная</a></li>
                 <li><a href="/">Фильмы</a></li>
                 <li><a href="/favorites">Избранное</a></li>
+                <li><a href="/booking">Бронирование</a></li>
                 <li><a href="/">О режиссере</a></li>
                 <li><a href="/">Контакты</a></li>
               </ul>
@@ -65,6 +67,7 @@ function App() {
               } />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
+              <Route path="/booking" element={<BookingPage />} />
             </Routes>
           </main>
 
