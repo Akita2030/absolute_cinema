@@ -165,8 +165,26 @@
   color: #fff;
 }
 
-.booking-form input:focus {
+.booking-form input:focus,
+.booking-form select:focus {
   outline: 2px solid rgba(129, 140, 248, 0.6);
+}
+
+.booking-form select {
+  border: none;
+  border-radius: 12px;
+  padding: 0.85rem 1rem;
+  font-size: 1rem;
+  background: rgba(15, 23, 42, 0.75);
+  color: #fff;
+  cursor: pointer;
+}
+
+.error-text {
+  color: #ef4444;
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+  display: block;
 }
 
 .booking-form-actions {
@@ -210,6 +228,48 @@
   margin-bottom: 1rem;
 }
 
+.booking-controls {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  align-items: flex-end;
+}
+
+.search-box,
+.sort-box {
+  flex: 1;
+  min-width: 200px;
+}
+
+.search-box label,
+.sort-box label {
+  display: grid;
+  gap: 0.4rem;
+  font-size: 0.95rem;
+  color: #e2e8f0;
+}
+
+.search-input,
+.sort-select {
+  border: none;
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  background: rgba(30, 41, 59, 0.7);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.search-input:focus,
+.sort-select:focus {
+  outline: 2px solid rgba(129, 140, 248, 0.6);
+}
+
+.sort-select {
+  cursor: pointer;
+}
+
 .booking-empty {
   margin: 0;
   opacity: 0.75;
@@ -236,6 +296,39 @@
   align-items: center;
   flex-wrap: wrap;
   gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.delete-button {
+  background: rgba(239, 68, 68, 0.8);
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.delete-button:hover {
+  background: rgba(239, 68, 68, 1);
+  transform: translateY(-1px);
+}
+
+.booking-details {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.booking-details p {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.booking-details strong {
+  color: #bfdbfe;
 }
 
 .booking-list-head h3 {
@@ -272,4 +365,20 @@
   .booking-form-actions button {
     width: 100%;
   }
+  .booking-controls {
+    flex-direction: column;
+  }
+  .search-box,
+  .sort-box {
+    width: 100%;
+  }
+  .booking-list-head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .delete-button {
+    width: 100%;
+  }
 }
+
+

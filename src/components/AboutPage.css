@@ -1,0 +1,162 @@
+.about-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 3rem 0;
+}
+
+.about-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.about-header h1 {
+  color: white;
+  font-size: 3rem;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+  margin: 0;
+}
+
+.director-content {
+  max-width: 900px;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  padding: 3rem;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+
+.director-main {
+  margin-bottom: 3rem;
+}
+
+.director-info h2 {
+  color: #333;
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.director-meta {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.director-meta p {
+  color: #666;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.director-meta strong {
+  color: #333;
+}
+
+.director-bio {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.director-bio p {
+  color: #555;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.director-works,
+.director-awards {
+  margin-bottom: 2.5rem;
+}
+
+.director-works h3,
+.director-awards h3 {
+  color: #333;
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  border-bottom: 3px solid #667eea;
+  padding-bottom: 0.5rem;
+}
+
+.works-list,
+.awards-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.works-list li,
+.awards-list li {
+  background: linear-gradient(45deg, #667eea, #764ba2);
+  color: white;
+  padding: 1rem 1.5rem;
+  margin-bottom: 0.75rem;
+  border-radius: 10px;
+  font-size: 1.05rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.works-list li:hover,
+.awards-list li:hover {
+  transform: translateX(10px);
+  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+.director-quote {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+  border-left: 5px solid #667eea;
+  padding: 2rem;
+  border-radius: 10px;
+  margin-top: 3rem;
+}
+
+.director-quote blockquote {
+  margin: 0 0 1rem 0;
+  font-size: 1.2rem;
+  font-style: italic;
+  color: #333;
+  line-height: 1.8;
+}
+
+.director-quote cite {
+  display: block;
+  text-align: right;
+  color: #666;
+  font-size: 1rem;
+  font-style: normal;
+}
+
+.loading-director {
+  text-align: center;
+  color: white;
+  font-size: 1.2rem;
+  padding: 3rem;
+}
+
+@media (max-width: 768px) {
+  .about-header h1 {
+    font-size: 2rem;
+  }
+
+  .director-content {
+    padding: 2rem 1.5rem;
+  }
+
+  .director-info h2 {
+    font-size: 2rem;
+  }
+
+  .director-meta {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .director-quote blockquote {
+    font-size: 1rem;
+  }
+}
+

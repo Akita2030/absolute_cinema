@@ -119,7 +119,10 @@ const FavoritesPage = () => {
                   ))}
                 </div>
                 <p className="movie-description">{movie.description}</p>
-                <button className="view-details-btn">
+                <button 
+                  className="view-details-btn"
+                  onClick={() => handleMovieClick(movie)}
+                >
                   Подробнее
                 </button>
               </div>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { Provider, useDispatch, useSelector } from 'react-redux';
 import store from './store';
 import MovieList from './components/MovieList';
@@ -11,6 +11,8 @@ import RegisterPage from './components/RegisterPage';
 import { authLogout } from './store/actions/authActions';
 import ProtectedRoute from './components/ProtectedRoute';
 import BookingPage from './components/BookingPage';
+import AboutPage from './components/AboutPage';
+import ContactsPage from './components/ContactsPage';
 
 const HeaderAuth = () => {
   const { isAuthenticated, user } = useSelector(s => s.auth);
@@ -25,8 +27,8 @@ const HeaderAuth = () => {
   }
   return (
     <div className="nav-auth">
-      <a href="/login">Войти</a>
-      <a href="/register">Регистрация</a>
+      <Link to="/login">Войти</Link>
+      <Link to="/register">Регистрация</Link>
     </div>
   );
 };
@@ -44,12 +46,11 @@ function App() {
                 <h1>ABSOLUTE CINEMA</h1>
               </div>
               <ul className="nav-menu">
-                <li><a href="/">Главная</a></li>
-                <li><a href="/">Фильмы</a></li>
-                <li><a href="/favorites">Избранное</a></li>
-                <li><a href="/booking">Бронирование</a></li>
-                <li><a href="/">О режиссере</a></li>
-                <li><a href="/">Контакты</a></li>
+                <li><Link to="/">Главная</Link></li>
+                <li><Link to="/favorites">Избранное</Link></li>
+                <li><Link to="/booking">Бронирование</Link></li>
+                <li><Link to="/about">О режиссере</Link></li>
+                <li><Link to="/contacts">Контакты</Link></li>
               </ul>
               <HeaderAuth />
             </nav>
@@ -68,6 +69,8 @@ function App() {
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
               <Route path="/booking" element={<BookingPage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/contacts" element={<ContactsPage />} />
             </Routes>
           </main>
 

@@ -7,6 +7,7 @@ export const BOOKING_RESERVE_SUCCESS = 'BOOKING_RESERVE_SUCCESS';
 export const BOOKING_RESERVE_FAILURE = 'BOOKING_RESERVE_FAILURE';
 
 export const BOOKING_CLEAR_MESSAGE = 'BOOKING_CLEAR_MESSAGE';
+export const BOOKING_REMOVE = 'BOOKING_REMOVE';
 
 const mockShowtimes = [
 	{
@@ -53,6 +54,7 @@ export const bookingReserveSuccess = (payload) => ({ type: BOOKING_RESERVE_SUCCE
 export const bookingReserveFailure = (error) => ({ type: BOOKING_RESERVE_FAILURE, payload: error });
 
 export const bookingClearMessage = () => ({ type: BOOKING_CLEAR_MESSAGE });
+export const removeBooking = (bookingId) => ({ type: BOOKING_REMOVE, payload: bookingId });
 
 export const fetchShowtimes = () => async (dispatch) => {
 	dispatch(bookingFetchRequest());
@@ -64,7 +66,7 @@ export const fetchShowtimes = () => async (dispatch) => {
 	}
 };
 
-export const reserveSeats = ({ showId, seats, customerName, contact }) => async (dispatch, getState) => {
+export const reserveSeats = ({ showId, seats, customerName, contact, phone, email, eventType, date }) => async (dispatch, getState) => {
 	dispatch(bookingReserveRequest());
 	try {
 		await new Promise((resolve) => setTimeout(resolve, 500));
@@ -85,6 +87,10 @@ export const reserveSeats = ({ showId, seats, customerName, contact }) => async 
 			seats,
 			customerName,
 			contact,
+			phone,
+			email,
+			eventType,
+			date,
 			confirmation,
 			showTitle: show.title
 		}));
@@ -92,3 +98,5 @@ export const reserveSeats = ({ showId, seats, customerName, contact }) => async 
 		dispatch(bookingReserveFailure(error.message));
 	}
 };
+
+
